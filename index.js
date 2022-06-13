@@ -545,7 +545,7 @@ app.get("/user/username/:email", (req, res) => {
 });
 
 
-app.listen(process.env.PORT, process.env.IP, () => {
+app.listen(process.env.PORT || 3000, process.env.IP, () => {
   console.log("Server started on port 3001");
   cookieDB.query("DROP TABLE IF EXISTS cookies;");
   cookieDB.query("CREATE TABLE IF NOT EXISTS cookies (token VARCHAR(100) PRIMARY KEY);", (err, result) => {
