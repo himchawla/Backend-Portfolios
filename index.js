@@ -549,10 +549,10 @@ app.get("/user/username/:email", (req, res) => {
     }
 });
 
-// app.use(express.static("Frontend/build"));
-// app.get("*", (req, res) => {
-//     res.sendFile(path.join(__dirname + "/Frontend/build/index.html"));
-// });
+app.use(express.static("Frontend/build"));
+app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname + "/Frontend/build/index.html"));
+});
 app.listen(process.env.PORT || 3001, process.env.IP, () => {
   console.log("Server started on port 3001");
   cookieDB.query("DROP TABLE IF EXISTS cookies;");
