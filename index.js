@@ -93,7 +93,7 @@ app.post("/create", (req, res) => {
     const username = req.body.username;
     var duplicateUsername = false;
     const password = req.body.password;
-    console.log(name, password);
+    //console.log(name, password);
     
     db.query("SELECT * FROM users WHERE email = ?", [email], (err, result) => {
         if (err) {
@@ -113,7 +113,7 @@ app.post("/create", (req, res) => {
                         console.log(err);
                     } else {
                         encryptedPassword = hash;
-                        console.log(hash);
+                        //console.log(hash);
                         db.query("INSERT INTO users (name, username, email ,password) values (?,?,?,?);", [name, username, email, hash], (err, result) => {
 
                             if (err) {
@@ -126,7 +126,7 @@ app.post("/create", (req, res) => {
                         });
                     }
                 });
-                console.log(encryptedPassword, name, email, username);
+                //console.log(encryptedPassword, name, email, username);
                 
             }
         }
@@ -145,7 +145,7 @@ app.post("/create/userDetails/", (req, res) => {
             res.send("success");
         }
     });
-    console.log("Username:",  username, "Description:", description, "NumOfSkills:", numOfSkills);
+   /// console.log("Username:",  username, "Description:", description, "NumOfSkills:", numOfSkills);
 
 });
 
@@ -161,7 +161,7 @@ app.post("/create/addSkill/", (req, res) => {
             res.send("success");
         }
     })
-    console.log("Username:", username, "SkillName:", skillName, "SkillProficiency:", skillProficiency);
+    //console.log("Username:", username, "SkillName:", skillName, "SkillProficiency:", skillProficiency);
 
 });
 
@@ -301,7 +301,7 @@ app.post("/user/addProject", (req, res) => {
     
     const projectImage = req.files.projectImage;
     
-    console.log(req.files.projectImage);
+    //console.log(req.files.projectImage);
 
     const mainProject = projectMain === "true" ? 1 : 0;
     const publicProject = projectPublic === "true" ? 1 : 0;
@@ -356,7 +356,7 @@ app.post("/user/addProject", (req, res) => {
                 // db.query('SELECT * FROM userProjects WHERE username = ? SORT_DIRECTION ', [username], (err, result) => {
 
 
-                console.log("Username:", username, "ProjectName:", projectName, "ProjectShortDescription:", projectShortDescription, "ProjectLongDescription:", projectLongDescription, "MainProject:", mainProject, "PublicProject:", publicProject);
+                //console.log("Username:", username, "ProjectName:", projectName, "ProjectShortDescription:", projectShortDescription, "ProjectLongDescription:", projectLongDescription, "MainProject:", mainProject, "PublicProject:", publicProject);
             }
             else {
                 db.query(`INSERT INTO userProjects (username, projectID, projectName, projectShortDescription,
@@ -470,7 +470,7 @@ app.post("/login", (req, res) => {
             res.send("error");
         } else {
             if (result.length > 0) {
-                console.log(result);
+                //console.log(result);
                 bcrypt.compare(password, result[0].password, (err, isMatch) => {
                     if (err) {
                         console.log(err);
@@ -494,7 +494,7 @@ app.post("/login", (req, res) => {
                             if (err) {
                                 console.log(err);
                             } else {
-                                console.log(hash);
+                                //console.log(hash);
                                 res.token = hash;
                                 cookieDB.query("INSERT INTO cookies (token) values (?);", [res.token], (err, result) => {
                                     if (err) {
@@ -530,7 +530,7 @@ app.get("/user/name/:username", (req, res) => {
          else {
              if(result.length > 0) {
 
-             console.log(result);
+             //console.log(result);
               res.send(result[0].name);
              }
          }
