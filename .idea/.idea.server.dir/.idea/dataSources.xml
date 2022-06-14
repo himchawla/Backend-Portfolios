@@ -22,5 +22,12 @@
       <jdbc-url>jdbc:sqlserver://pfmaker.database.windows.net:1433;database=data</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
+    <data-source source="LOCAL" name="@pf-maker.mysql.database.azure.com" uuid="586a44ca-6c88-4bcb-b235-cfa0806f6647">
+      <driver-ref>mysql.8</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://pf-maker.mysql.database.azure.com:3306</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
   </component>
 </project>

@@ -42,23 +42,25 @@ app.use(express.json());
 app.use(fileUpload());
 
 const db = mysql.createConnection({
-    host: "pfmaker.database.windows.net",
-    user: "pfroot",
-    password: "PFMaker@9",
-    database: "userData",
-    port: 1433,
-    ssl: {
-        rejectUnauthorized: false,
-    },
-});
-
-const cookieDB = mysql.createConnection({
-    host: "pfmaker.database.windows.net",
+    host: "pf-maker.mysql.database.azure.com",
     user: "pfroot",
     password: "PFMaker@9",
     database: "data",
-    port: 1433,
-    ssl: {ca:fs.readFileSync("./BaltimoreCyberTrustRoot.crt.pem")},
+    port: 3306,
+    ssl: {
+        rejectUnauthorized: false,
+        ca:fs.readFileSync("./DigiCertGlobalRootCA.crt.pem")},
+});
+
+const cookieDB = mysql.createConnection({
+    host: "pf-maker.mysql.database.azure.com",
+    user: "pfroot",
+    password: "PFMaker@9",
+    database: "cookiedb",
+    port: 3306,
+    ssl: {
+        rejectUnauthorized: false,
+        ca:fs.readFileSync("./DigiCertGlobalRootCA.crt.pem")},
 });
 
 
@@ -551,7 +553,7 @@ app.get("/user/username/:email", (req, res) => {
 });
 
 
-app.listen(process.env.PORT || 3000, process.env.IP, () => {
+app.listen(process.env.PORT || 3001, process.env.IP, () => {
   console.log("Server started on port 3001");
   cookieDB.query("DROP TABLE IF EXISTS cookies;");
   cookieDB.query("CREATE TABLE IF NOT EXISTS cookies (token VARCHAR(100) PRIMARY KEY);", (err, result) => {
