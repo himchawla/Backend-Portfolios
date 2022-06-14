@@ -10,6 +10,7 @@ const bodyParser = require("body-parser");
 const session = require("express-session");
 const universalCookie = require("universal-cookie");
 const {JSONCookies} = require("cookie-parser");
+const fs = require("fs");
 const cookie = new universalCookie();
 
 app.use(
@@ -41,18 +42,23 @@ app.use(express.json());
 app.use(fileUpload());
 
 const db = mysql.createConnection({
-    host: "127.0.0.1",
-    user: "root",
-    password: "",
-    database: "data",
-    multipleStatements: true
+    host: "pfmaker.database.windows.net",
+    user: "pfroot",
+    password: "PFMaker@9",
+    database: "userData",
+    port: 1433,
+    ssl: {
+        rejectUnauthorized: false,
+    },
 });
 
 const cookieDB = mysql.createConnection({
-    host: "127.0.0.1",
-    user: "root",
-    password: "",
-    database: "cookie_db",
+    host: "pfmaker.database.windows.net",
+    user: "pfroot",
+    password: "PFMaker@9",
+    database: "data",
+    port: 1433,
+    ssl: {ca:fs.readFileSync("./BaltimoreCyberTrustRoot.crt.pem")},
 });
 
 
