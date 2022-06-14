@@ -13,7 +13,7 @@ import 'bootstrap/dist/js/bootstrap.min.js'
 
 
 export const cookies = new Cookies();
-export const serverPath = "http://127.0.0.1:3001";
+export const serverPath = window.location.origin;
 
 
 //Main App function
