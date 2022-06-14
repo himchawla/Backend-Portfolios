@@ -5,6 +5,7 @@ import {useState} from "react";
 import {useLocation, useNavigate, useSearchParams} from "react-router-dom";
 import Cookies from "universal-cookie";
 import {MainNavbar} from "./User/MainNavbar";
+import {serverPath} from "./App";
 
 
 export function Login() {
@@ -36,7 +37,7 @@ export function Login() {
     const handleSubmit = async () => {
          // e.preventDefault();
         var userName = "";
-        await axios.get("http://localhost:3001/user/username/" + email).then(res => {
+        await axios.get(serverPath + "/user/username/" + email).then(res => {
             console.log(res.data);
             if(res.data === "") {
                 alert("User does not exist");
@@ -48,7 +49,7 @@ export function Login() {
         });
 
         console.log(email, password);
-        axios.post("http://localhost:3001/login/", {
+        axios.post( serverPath + "/login/", {
             email: email,
             password: password,
             token: "TOKEN",
