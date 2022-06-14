@@ -4,7 +4,7 @@ const fileUpload = require("express-fileupload");
 
 const app = express();
 const cors = require("cors");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const session = require("express-session");
