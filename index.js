@@ -30,7 +30,7 @@ app.use(
 // app.use(universalCookie());
 app.use(
     cors({
-        origin: ["https://quiet-tundra-60513.herokuapp.com"],
+        origin: ["*"],
         methods: ["GET", "POST"],
         credentials: true,
     })
