@@ -78,7 +78,7 @@ export function SignUp() {
        {
            //if(!cansubmit2())    return;
           
-           await axios.post("http://localhost:3001/create/userDetails/", {
+           await axios.post(serverPath + "/create/userDetails/", {
                 username: username,
                 description: description,
                 numOfSkills: numOfSkills,
@@ -89,7 +89,7 @@ export function SignUp() {
             });
            
            for (let i = 0; i < numOfSkills; i++) {
-               axios.post("http://localhost:3001/create/addSkill/", {
+               axios.post(serverPath + "/create/addSkill/", {
                    username: username,
                    skillName: skillsArray[i].skill,
                    skillProficiency: skillsArray[i].proficiency,
@@ -273,8 +273,5 @@ export function SignUp() {
     else if(signup === "signup2") {
         return signup2();
     }
-    
-        //Interactive Signup form, ask for one parameter at a time and then submit;
-    
     
 }
