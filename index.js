@@ -102,6 +102,7 @@ app.post("/create", (req, res) => {
         else {
             
             if (result.length > 0) {
+                alert("Email already exists");
                 res.send("User already exists");
             }
             else {

@@ -52,7 +52,7 @@ export function SignUp() {
 
        if(signup === "signup1") {
            if (password === confirmPassword) {
-               await axios.post("http://localhost:3001/create/", {
+               await axios.post(serverPath + "/create/", {
                    name: name,
                    username: username,
                    email: email,
