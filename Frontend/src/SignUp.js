@@ -123,7 +123,7 @@ export function SignUp() {
                            onChange={(event) => setEmail(event.target.value)} maxLength={100}/>
                     <label>Username:</label>
                     <input type={'text'} placeholder={'Enter your username'}
-                           onChange={(event) => setUsername(event.target.value)} maxLength={50}/>
+                           onChange={(event) => setUsername(event.target.value)} maxLength={50}
                            onBlur={validateUserName}/>
 
                     {dupeUsername ? <p style={{color: 'red'}}>Username is unavailable</p> : null}

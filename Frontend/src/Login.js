@@ -64,6 +64,7 @@ export function Login() {
             else 
             {
                 //console.log(name, res.data.password);
+                alert("Incorrect Username or password");
                 console.log(res);
                 console.log("error");
             }
