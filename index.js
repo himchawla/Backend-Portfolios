@@ -102,7 +102,7 @@ app.post("/create", (req, res) => {
         else {
             
             if (result.length > 0) {
-                alert("Email already exists");
+                // alert("Email already exists");
                 res.send("User already exists");
             }
             else {
@@ -135,18 +135,18 @@ app.post("/create", (req, res) => {
 });
 
 app.post("/create/userDetails/", (req, res) => {
-    const { username, description, numOfSkills} = req.body;
-    //console.log(username, userDetails);
-    db.query(`INSERT INTO userDetails (username, description, numberOfSkills) values (?,?,?);`, [username, description, numOfSkills], (err, result) => {
-        if (err) {
-            console.log(err);
-            res.send("error");
-        }
-        else {
-            res.send("success");
-        }
-    });
-    console.log("Username:",  username, "Description:", description, "NumOfSkills:", numOfSkills);
+    // const { username, description, numOfSkills} = req.body;
+    // //console.log(username, userDetails);
+    // db.query(`INSERT INTO userDetails (username, description, numberOfSkills) values (?,?,?);`, [username, description, numOfSkills], (err, result) => {
+    //     if (err) {
+    //         console.log(err);
+    //         res.send("error");
+    //     }
+    //     else {
+    //         res.send("success");
+    //     }
+    // });
+    // console.log("Username:",  username, "Description:", description, "NumOfSkills:", numOfSkills);
 
 });
 
@@ -170,7 +170,7 @@ app.post("/user/auth",  (req, res) => {
 
         const token = req.body.token;
         const sessionToken = token;
-        cookieDB.query(`SELECT * FROM cookie_db.cookies WHERE token = '${sessionToken}'`, (err, result) => {
+        cookieDB.query(`SELECT * FROM cookiedb.cookies WHERE token = '${sessionToken}'`, (err, result) => {
             if (err) {
                 console.log(err);
             } else {
@@ -187,7 +187,7 @@ app.post("/user/auth",  (req, res) => {
 app.post("/user/logout", (req, res) => {
     const token = req.body.token;
     const sessionToken = token;
-    cookieDB.query(`DELETE FROM cookie_db.cookies WHERE token = '${sessionToken}'`, (err, result) => {
+    cookieDB.query(`DELETE FROM cookiedb.cookies WHERE token = '${sessionToken}'`, (err, result) => {
         if (err) {
             console.log(err);
         } else {
@@ -197,39 +197,41 @@ app.post("/user/logout", (req, res) => {
 });
 
 app.post("/user/getDescription", (req, res) => {
-    const username = req.body.username;
-    db.query(`SELECT * FROM userDetails WHERE username = '${username}'`, (err, result) => {
-        if (err) {
-            console.log(err);
-        } else {
-            if (result.length > 0) {
-                result[0].username = username;
-                res.send(result[0]);
-            }
-            else {
-                res.send("error");
-            }
-        }
-    });
+    // const username = req.body.username;
+    // db.query(`SELECT * FROM userDetails WHERE username = '${username}'`, (err, result) => {
+    //     if (err) {
+    //         console.log(err);
+    //     } else {
+    //         if (result.length > 0) {
+    //             result[0].username = username;
+    //             res.send(result[0]);
+    //         }
+    //         else {
+    //             res.send("error");
+    //         }
+    //     }
+    // });
+    res.send("");
 });
 
 app.post("/user/getSpecialSkills", (req, res) => {
-    const username = req.body.username;
-    const skillId = req.body.skillId;
-    db.query(`SELECT *
-              FROM userSpecialSkills
-              WHERE username = '${username}'
-                AND skillId = '${skillId}'`, (err, result) => {
-        if (err) {
-            console.log(err);
-        } else {
-            if (result.length >= 1) {
-                res.send(result[0]);
-            } else {
-                res.send("error");
-            }
-        }
-    });
+    // const username = req.body.username;
+    // const skillId = req.body.skillId;
+    // db.query(`SELECT *
+    //           FROM userSpecialSkills
+    //           WHERE username = '${username}'
+    //             AND skillId = '${skillId}'`, (err, result) => {
+    //     if (err) {
+    //         console.log(err);
+    //     } else {
+    //         if (result.length >= 1) {
+    //             res.send(result[0]);
+    //         } else {
+    //             res.send("error");
+    //         }
+    //     }
+    // });
+    res.send("");
 });
 
 app.post("/user/getProject", (req, res) => {
@@ -478,6 +480,7 @@ app.post("/login", (req, res) => {
                         res.send("error");
                     }
                     if (!isMatch) {
+                        // alert("Incorrect password");
                         res.send("Incorrect password");
                     }
                     else {
@@ -532,7 +535,7 @@ app.get("/user/name/:username", (req, res) => {
              if(result.length > 0) {
 
              console.log(result);
-              res.send(result[0].name);
+              res.send(result[0].email);
              }
          }
     });
@@ -544,7 +547,9 @@ app.get("/user/username/:email", (req, res) => {
             if (err) {
                 console.log(err);
             } else {
-                res.send(result[0].username);
+                if (result.length > 0) {
+                    res.send(result[0].username);
+                }
             }
         });
     }
