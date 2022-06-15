@@ -53,17 +53,7 @@ export class MainPage extends React.Component {
         }
 
         //if(this.state.user === "") {
-        axios.post(serverPath + "/user/getDescription/", {username: this.state.username}).then(res => {
-            this.state.user = res.data;
-            if (res.data !== undefined) {
-                this.state.description = res.data.description;
-                // this.render();
-                document.getElementById("userDescription").innerHTML = this.state.description;
-            }
-            //this.setState({user: user});
-        }).catch(err => {
-            console.log(err);
-        });
+       
 
         axios.post(serverPath + "/user/getMainProject", {username: this.state.username}).then(res => {
             if (res.data !== "error") {
