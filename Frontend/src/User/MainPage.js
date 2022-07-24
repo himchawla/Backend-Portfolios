@@ -43,13 +43,16 @@ export class MainPage extends React.Component {
             user: "",
             username: props.username,
             specialSkills: [],
+            showcase: props.showcase,
         }
 
+        if(this.state.showcase === false) {
 
-        if (window.location.pathname !== "/" + this.state.username) {
-            Logout();
-            // window.location.href = "/login";
-            // console.log(window.location.href, "and" ,window.location.pathname, "/" + props.username);
+            if (window.location.pathname !== "/" + this.state.username) {
+                Logout();
+                // window.location.href = "/login";
+                // console.log(window.location.href, "and" ,window.location.pathname, "/" + props.username);
+            }
         }
 
         //if(this.state.user === "") {

@@ -19,9 +19,16 @@ export const serverPath = window.location.origin;
 //Main App function
 function App() {
 
+    const [preview, setPreview] = React.useState(false);
     var userName = cookies.get('username');
     if(userName === undefined) {
         userName = "";
+    }
+    if(window.location.pathname.toString().split("/")[1] === "preview") {
+        console.log(window.location.pathname.toString().split("/")[2]);
+        if(preview === false) 
+            setPreview(true);
+        userName = window.location.pathname.toString().split("/")[2];
     }
     return (
     <Router>
@@ -30,7 +37,8 @@ function App() {
                 <Route path="/login" element={<Login />} />;
                 <Route path="/signup" element={<SignUp />} />;
                 <Route path="/" element={<Home />} />
-                <Route exact path={"/:id/*"} element={<HomePage id={userName}/>} /> />
+                <Route exact path="/preview/:id/*" element={<HomePage id={userName} showcase={true}/>} />
+                <Route exact path={"/:id/*"} element={<HomePage id={userName}/>} showcase={false}/> />
             </Routes>
         </div>
     </Router>

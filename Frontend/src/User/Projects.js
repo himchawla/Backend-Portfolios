@@ -21,15 +21,18 @@ function Project(props)
         console.log(err);
     });
     console.log();
-    var link = "/" + props.username + "/projects/";
-    if(props.username === window.location.pathname.split("/")[1])
+    var link = "/" + window.location.pathname.split("/")[1] + "/projects/";
+    if(props.showcase) {
+        link = "/preview/" + props.username + "/projects/" + props.projectId;
+    }
+    else if(props.username === window.location.pathname.split("/")[1])
     {link += props.projectId }
     else {link += "view/" + props.username + "/" + props.projectId;}
     return(
         <div className="col-md-6 col-lg-4">
             <div className="card border-0">
                 <a href={link}>
-                    <img className="card-img-top scale-on-hover" id={"projectImage" + + props.projectId + "_" + props.username} src="" alt="Card Image"/>
+                    <img id={"projectImage" + + props.projectId + "_" + props.username} src={""} /> 
                     
                 </a>
                 <div className="card-body">
@@ -58,7 +61,7 @@ function AddProject(props) {
 
 
     const fileChangedHandler = (e) => {
-        if(e.target.files[0].size > 102400 || e.target.files[0].type !== "image/png") {
+        if(e.target.files[0].size > 102400) {
             alert("File is too big! or File type is not supported!");
             e.target.value = "";
         }
@@ -310,13 +313,15 @@ function ProjectView(props) {
         setProjectId(window.location.pathname.split("/")[3]);
         setIsMyProject(true);
     }
+    
+    
     let params = (new URL(document.location)).searchParams;
     let token = params.get("projectId");
     const [on, setOn] = useState(false);
     axios.post(serverPath + "/user/getProject", {username: username, projectId: projectId}).then(res => {
-        console.log(res.data);
+        // console.log(res.data);
         if (res.data !== "error") {
-            console.log("success");
+            // console.log("success");
             document.getElementById("projectName").innerHTML = res.data.projectName;
             document.getElementById("projectDes" ).innerHTML = res.data.projectLongDescription;
             const base64String = btoa(String.fromCharCode(...new Uint8Array(res.data.image.data)));
@@ -355,15 +360,24 @@ function ProjectView(props) {
 
     return (
         <main className="page projects-page">
-            <Routes>
-                <Route path="/edit" element={<EditProject username={username} projectId={projectId} projectName={projectName} projectShortDescription={projectShortDescription} projectLongDescription={projectLongDescription} projectPublic={projectPublic} projectMain={projectMain}/>}/>
+            {
+                props.showcase ?
+                    <div></div>
+                    :
+                <Routes>
+                <Route path="/edit"
+                       element={<EditProject username={username} projectId={projectId} projectName={projectName}
+                                             projectShortDescription={projectShortDescription}
+                                             projectLongDescription={projectLongDescription}
+                                             projectPublic={projectPublic} projectMain={projectMain}/>}/>
             </Routes>
+            }
             <section className="portfolio-block projects-cards">
                 <div className="container">
                     <div className="heading">
                         <h2 id={"projectName"}>Lorem Ipsum</h2>
                         {
-                            isMyProject 
+                            isMyProject && !props.showcase
                                 ?
                                 <ButtonGroup className="btn-group-toggle float-right" data-toggle="buttons">
                                     <Button className="btn btn-primary" onClick={EditThisProject}>
@@ -382,6 +396,7 @@ function ProjectView(props) {
                             
                             <div className="card-body">
                                 <img className="card-img-top scale-on-hover" src="assets/img/nature/image1.jpg" id={'projectImage'} alt="Card Image"/>
+                                {/*<p id={'projectImage'}> </p>*/}
                                 <br />
                                 <br />
                                 <br />
@@ -403,11 +418,25 @@ export function Projects(props) {
     const [otherProjects, setOtherProjects] = useState([]);
     const [showAllProjects, setShowAllProjects] = useState(true);
     const [userProjectCount, setUserProjectCount] = useState(0);
+    const [showProjects, setShowProjects] = useState(true);
+    
+    useEffect(() => {
+        if(window.location.pathname === "/" + props.username + "/projects" || (props.showcase && window.location.pathname === "/preview/" + props.username + "/projects")) {
+            setShowProjects(true);
+        }
+        else {
+            setShowProjects(false);
+        }
+        
+        if(props.showcase) {
+            setShowAllProjects(false);
+        }
+    }, [props.showcase]);
     
     
     axios.post(serverPath + "/user/getProjectCount", {username: props.username}).then(res => {
              if (projects.length < res.data) {
-                setProjects([...projects, <Project projectId={projects.length} username={props.username}/>]);
+                setProjects([...projects, <Project projectId={projects.length} username={props.username} showcase={props.showcase}/>]);
                 console.log(projects);
                 setUserProjectCount(res.data);
             }
@@ -418,7 +447,7 @@ export function Projects(props) {
         axios.post(serverPath + "/user/getAllProjectCount", {username: props.username}).then(res => {
             if (otherProjects.length < res.data.length) {
                 setOtherProjects([...otherProjects,
-                    <Project projectId={res.data[otherProjects.length].projectID} username={res.data[otherProjects.length].username}/>]);
+                    <Project projectId={res.data[otherProjects.length].projectID} username={res.data[otherProjects.length].username} showcase={false}/>]);
                 console.log(res.data.length - 1 + otherProjects.length);
             }
         }).catch(err => {
@@ -432,22 +461,42 @@ export function Projects(props) {
     return (
         <div>
                 <Routes>
-                    <Route path="/:projectId/*" element={<ProjectView username={props.username}/>}/>
-                    <Route path={"addProject"} element={<AddProject username={props.username}/>}/>
+                    <Route path="/:projectId/*" element={<ProjectView username={props.username} showcase={props.showcase}/>}/>
+
+                    {
+                        props.showcase
+                        ?
+                            <Route path={"addProject"} element={<ProjectView username={props.username} showcase={props.showcase}/>}/>
+                            :
+                            <Route path={"addProject"} element={<AddProject username={props.username}/>}/>
+                    }
                 </Routes>
             {
-                window.location.pathname === "/" + props.username + "/projects" ?
+                    showProjects ?
                     <main className="page projects-page">
                         <section className="portfolio-block projects-cards">
                             <div className="container">
                                 <div className="heading">
                                     <h2>Projects</h2>
-                                    <input type="checkbox" data-toggle="toggle" onChange={event => setShowAllProjects(!event.target.checked)}/> Show my Projects only
+                                    {
+                                        props.showcase ?
+                                        <div></div>
+                                        :
+                                        <div>
+                                        <input type="checkbox" data-toggle="toggle"
+                                            onChange={event => setShowAllProjects(!event.target.checked)}/>Show my Projects only
+                                        </div>
+                                    } 
+                                    
                                 </div>
-                                <button type="button" className="btn btn-primary" onClick={() => {
-                                    window.location.pathname = "/" + props.username + "/Projects/addProject";
-                                }}>Add Project</button>
-                                
+                                {
+                                    props.showcase ?
+                                        <div></div>
+                                    :
+                                        <button type="button" className="btn btn-primary" onClick={() => {
+                                            window.location.pathname = "/" + props.username + "/Projects/addProject";
+                                        }}>Add Project</button>
+                                }
                                 <div className="row" id={"projects"}>
                                     {projects}
                                     {

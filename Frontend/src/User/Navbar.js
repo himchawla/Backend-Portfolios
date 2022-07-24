@@ -41,19 +41,38 @@ export function Navbar(props) {
                     <div className="collapse navbar-collapse" id="navbarNav">
                         <ul className="navbar-nav ms-auto">
                             <li className="nav-item">
-                                <a className="nav-link" id={"NavBarHome"} href={"/" + props.username}>Home</a>
+
+                                {
+                                    props.showcase ?
+                                        <a className="nav-link" id={"NavBarHome"} href={"/preview/" + props.username}>Home</a>
+                                        :
+                                        <a className="nav-link" id={"NavBarHome"} href={"/" + props.username}>Home</a>
+                                }
                             </li>
                             <li className="nav-item">
-                                <a className="nav-link" id={"NavBarProjects"}
-                                   href={"/" + props.username + "/projects"}>Projects</a>
+                                {
+                                    props.showcase ?
+                                        <a className="nav-link" id={"NavBarProjects"}
+                                           href={"/preview/" + props.username + "/projects"}>Projects</a>   
+                                        :
+                                        <a className="nav-link" id={"NavBarProjects"}
+                                    href={"/" + props.username + "/projects"}>Projects</a>
+                                }
                             </li>
                             {/*<li className="nav-item">*/}
                             {/*    <a className="nav-link" id={"NavBarCV"} href={"/" + props.username + "/cv" }>*/}
                             {/*        CV</a></li>*/}
                             {/*<li className="nav-item"><a className="nav-link" id={"NavBarContact"}*/}
                             {/*                            href={"/" + props.username + "/contact"}>Contact</a></li>*/}
-                            <li className="nav-item"><a href={"/"} className="nav-link" id={"NavBarLogout"}
-                                                        onClick={Logout}>Logout</a></li>
+                            {
+                                props.showcase ?
+                                    <div></div>
+                                    :
+                                    <li className="nav-item">
+                                        <a href={"/"} className="nav-link" id={"NavBarLogout"}
+                                           onClick={Logout}>Logout</a>
+                                    </li>
+                            }
                         </ul>
                     </div>
                 </div>

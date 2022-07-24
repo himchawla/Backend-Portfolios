@@ -34,7 +34,29 @@ export class HomePage extends Component {
             name: "",
             username: this.props.id,
             user: null,
+            showcase :this.props.showcase,
         }
+        
+        if(this.state.showcase === undefined) {
+            
+            this.setState({showcase: false});
+        }
+        
+        if(this.state.showcase === true) {
+
+            axios.post(`${serverPath}/check`, {
+                username: this.state.username
+            }).then(res => {
+                if (res.data === "username available") {
+                    window.location.href = "/login";
+                }
+            }).catch(err => {
+                console.log(err);
+            });
+            
+            return;
+        }
+        
         const sessionToken = cookies.get("sessionToken");
         if (sessionToken === undefined) {
             console.log("no session token");
@@ -89,17 +111,19 @@ export class HomePage extends Component {
 
                 {console.log(window.location.pathname)}
                 
-                <Navbar username={this.state.username} active={active}/>
+                <Navbar username={this.state.username} active={active} showcase={this.state.showcase}/>
+
 
                 <Routes>
-                    <Route path={"/projects/*"} element={<Projects username={this.state.username} />}/>
+                    <Route path={"/projects/*"} element={<Projects username={this.state.username} showcase={this.state.showcase}/>}/>
 
-                    <Route path={"/"} element={<MainPage username={this.state.username}/>}/>
+                    <Route path={"/"} element={<MainPage username={this.state.username} showcase={this.state.showcase}/>}/>
 
-                    <Route path={"/contact"} element={<Contact username={this.state.username}/>}/>
-                    <Route path={"/cv"} element={<CV username={this.state.username}/>}/>
+                    <Route path={"/contact"} element={<Contact username={this.state.username} showcase={this.state.showcase}/>}/>
+                    <Route path={"/cv"} element={<CV username={this.state.username} showcase={this.state.showcase}/>}/>
                     {/*<Route path={"/logout"} element={<Logout />} />*/}
                 </Routes>
+                
 
             <Footer username={this.state.username} />
             </div>

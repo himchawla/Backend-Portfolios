@@ -49,7 +49,7 @@ const db = mysql.createConnection({
         ca:fs.readFileSync("./DigiCertGlobalRootCA.crt.pem")},
 });
 
-const cookieDB = mysql.createConnection({
+const cookieDB = mysql.creteConnection({
     host: "pf-maker.mysql.database.azure.com",
     user: "pfroot",
     password: "PFMaker@9",
@@ -527,7 +527,7 @@ app.post("/login", (req, res) => {
 
 app.get("/user/name/:username", (req, res) => {
     console.log(req.params.username);
-   db.query("SELECT name FROM users WHERE username = ?;", [req.params.username], (err, result) => {
+   db.query("SELECT email FROM users WHERE username = ?;", [req.params.username], (err, result) => {
          if(err) {
               console.log(err);
          }
@@ -559,6 +559,7 @@ app.use(express.static("Frontend/build"));
 app.get("*", (req, res) => {
     res.sendFile(path.join(__dirname + "/Frontend/build/index.html"));
 });
+
 app.listen(process.env.PORT || 3001, process.env.IP, () => {
   console.log("Server started on port 3001");
   cookieDB.query("DROP TABLE IF EXISTS cookies;");
