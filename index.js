@@ -49,7 +49,7 @@ const db = mysql.createConnection({
         ca:fs.readFileSync("./DigiCertGlobalRootCA.crt.pem")},
 });
 
-const cookieDB = mysql.creteConnection({
+const cookieDB = mysql.createConnection({
     host: "pf-maker.mysql.database.azure.com",
     user: "pfroot",
     password: "PFMaker@9",
@@ -133,6 +133,10 @@ app.post("/create", (req, res) => {
         }
     });
 });
+
+app.get("/", (req, res) => {
+    res.send("test");
+})
 
 app.post("/create/userDetails/", (req, res) => {
     // const { username, description, numOfSkills} = req.body;
